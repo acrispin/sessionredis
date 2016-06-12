@@ -1,0 +1,59 @@
+GET sin session
+$ curl http://localhost:8080/sessionredis/home
+
+POST
+$ curl -i -d "name=Anton" http://localhost:8080/sessionredis/home
+
+GET se recupera el valor del SESSION
+$ curl -H "Cookie: SESSION=794f0329-bcd2-43fb-920c-10a3e9465f0a" http://localhost:8080/sessionredis/home
+
+Para eliminar todas las llaves en redis generadas por spring
+$ redis-cli keys 'spring*' | xargs redis-cli del
+
+install redis
+$ sudo add-apt-repository ppa:chris-lea/redis-server
+$ sudo apt-get update
+$ sudo apt-get install redis-server
+$ redis-benchmark -q -n 1000 -c 10 -P 5
+
+configurar redis
+$ sudo vim /etc/redis/redis.conf
+configuraciones claves
+requirepass your_redis_master_password
+appendonly yes
+appendfilename redis-staging-ao.aof
+
+reiniciar servicio redis
+$ sudo service redis-server restart
+
+verificar estado
+$ sudo service redis-server status
+
+version de redis
+$ redis-server --version
+
+conectarse a redis server con ip y puerto especifico
+$ redis-cli -h 127.0.0.1 -p 6379
+
+conectarse por defecto
+$ redis-cli
+
+verificar redis pid
+sudo netstat -naptu | grep LISTEN
+
+Fuentes:
+http://docs.spring.io/spring-session/docs/current/reference/html5/guides/httpsession.html
+https://www.javacodegeeks.com/2013/02/caching-with-spring-data-redis.html
+http://try.redis.io/
+https://hostpresto.com/community/tutorials/how-to-install-and-configure-redis-on-ubuntu-14-04/
+https://www.digitalocean.com/community/tutorials/how-to-configure-a-redis-cluster-on-ubuntu-14-04
+http://highscalability.com/blog/2011/7/6/11-common-web-use-cases-solved-in-redis.html
+https://www.jayway.com/2015/05/31/scaling-out-with-spring-session/
+https://github.com/matsev/spring-session-example
+http://docs.spring.io/spring-data/redis/docs/current/reference/html/
+https://github.com/arturmkrtchyan/spring-data-redis/blob/master/src/main/config/redis.xml
+http://www.devadictos.com/java/utilizando-redis-con-spring-data-redis/
+https://github.com/javiermontero/redis-showcase
+
+
+
