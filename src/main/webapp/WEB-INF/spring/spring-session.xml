@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+    <context:property-placeholder location="classpath:application.properties"/>
+
+    <!--maxInactiveIntervalInSeconds: tiempo de expiracion de la session, como el session-timeout del web.xml-->
+    <!--por defecto es 1800 (30 min)-->
+    <!--fuente: http://es.slideshare.net/dgomezg/managing-users-data-with-spring-session slider 31 -->
+    <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"
+        p:maxInactiveIntervalInSeconds="1800" />
+
+    <!--fuente: http://www.devadictos.com/java/utilizando-redis-con-spring-data-redis/-->
+    <bean id="redisConnectionFactory" 
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:use-pool="true"
+          p:host-name="${spring.redis.server}"
+          p:port="${spring.redis.port}"
+          p:timeout="${spring.redis.timeout}" 
+          p:password="${spring.redis.password}"
+          p:database="${spring.redis.database}"/>
+    
+<!--    <bean id="redisConnectionFactory"
+        class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="hostName" value="${spring.redis.server}" />
+        <property name="port" value="${spring.redis.port}" />
+        <property name="timeout" value="${spring.redis.timeout}" />
+    </bean>-->
+</beans>
